@@ -1,0 +1,805 @@
+{
+	"folder_history":
+	[
+	],
+	"last_version": 3065,
+	"last_window_id": 6,
+	"log_indexing": false,
+	"settings":
+	{
+		"new_window_height": 624.0,
+		"new_window_settings":
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+				]
+			},
+			"build_system": "",
+			"command_palette":
+			{
+				"height": 340.0,
+				"selected_items":
+				[
+					[
+						"pando",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"pandown",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"pandow",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"pandown l",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"install",
+						"Package Control: Install Package"
+					],
+					[
+						"pandown ht",
+						"Build: Pandown: HTML 5"
+					],
+					[
+						"pandown htm",
+						"Build: Pandown: HTML 5"
+					],
+					[
+						"pandown html",
+						"Build: Pandown: HTML 5"
+					],
+					[
+						"pandown lat",
+						"Build: Pandown: LaTeX"
+					],
+					[
+						"pandown open",
+						"Build: Pandown: OpenOffice Document"
+					],
+					[
+						"pandown op",
+						"Build: Pandown: OpenDocument XML"
+					],
+					[
+						"pandown wor",
+						"Build: Pandown: Word Document"
+					],
+					[
+						"packa",
+						"Package Control: Remove Package"
+					],
+					[
+						"pandown pdf",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"pand",
+						"Pandown: Build to Window"
+					],
+					[
+						"in",
+						"Package Control: Install Package"
+					],
+					[
+						"ins",
+						"Package Control: Install Package"
+					],
+					[
+						"colors",
+						"Colorsublime: Install Theme"
+					],
+					[
+						"color",
+						"Colorsublime: Browse Themes"
+					],
+					[
+						"insta",
+						"Package Control: Install Package"
+					],
+					[
+						"inst",
+						"Package Control: Install Package"
+					],
+					[
+						"men",
+						"View: Toggle Menu"
+					],
+					[
+						"pack",
+						"Package Control: Install Package"
+					],
+					[
+						"pac",
+						"Package Control: Install Package"
+					]
+				],
+				"width": 543.0
+			},
+			"console":
+			{
+				"height": 126.0,
+				"history":
+				[
+					"import urllib.request,os,hashlib; h = '2deb499853c4371624f5a07e27c334aa' + 'bf8c4e67d14fb0525ba4f89698a6d7e1'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+				]
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"file_history":
+			[
+				"/home/hollandheese/Google Drive/Math 115/Syllabus/pandoc-config.json",
+				"/home/hollandheese/Google Drive/Math 115/Schedule/pandoc-config.json",
+				"/home/hollandheese/.pandoc/templates/school.latex",
+				"/home/hollandheese/Google Drive/Math 115/Schedule/schedule.mdown",
+				"/home/hollandheese/.pandoc/templates/school-pow.latex",
+				"/home/hollandheese/.pandoc/templates/school.html5",
+				"/home/hollandheese/.pandoc/templates/school.html",
+				"/home/hollandheese/.pandoc/templates/school_old.latex",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow1.mdown",
+				"/home/hollandheese/Google Drive/Math 115/POW/pandoc-config.json",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow4.mdown",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow2.mdown",
+				"/home/hollandheese/Google Drive/Math 44/Chapter 8 - Functions/math44_ch8se2_wrksht.tex",
+				"/home/hollandheese/Google Drive/Math 115/Tim Lauck -Math115Spring2015/POWS/week1.tex",
+				"/home/hollandheese/.pandoc/school.css",
+				"/home/hollandheese/.cache/.fr-FP8jXP/Pandown Markdown.sublime-build",
+				"/home/hollandheese/.cache/.fr-umnPYu/predawn.sublime-theme",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow1.html",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Markdown.sublime-settings",
+				"/home/hollandheese/Google Drive/Math 115/Syllabus/syllabus.mdown",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+				"/home/hollandheese/.cache/.fr-6XM1Lh/zenburn.tmTheme",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/JSON.sublime-settings",
+				"/home/hollandheese/.emacs.d/hollandheese.org",
+				"/home/hollandheese/.pandoc/templates/school2.html5",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow4.html",
+				"/home/hollandheese/.pandoc/templates/school2.css",
+				"/home/hollandheese/.emacs.d/starter-kit-misc.org",
+				"/home/hollandheese/.emacs.d/places",
+				"/home/hollandheese/.emacs.d/starter-kit-org.org",
+				"/home/hollandheese/Downloads/emacs-starter-kit-master/starter-kit.org",
+				"/home/hollandheese/.emacs.d/init.el",
+				"/home/hollandheese/Downloads/emacs-starter-kit-master/dominating-file.el",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow2.html",
+				"/home/hollandheese/.emacs.d/README.md",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow3.mdown",
+				"/home/hollandheese/Google Drive/Math 115/Tim Lauck -Math115Spring2015/POWS/week4.tex",
+				"/home/hollandheese/Google Drive/Math 115/Tim Lauck -Math115Spring2015/POWS/week3.tex",
+				"/home/hollandheese/Google Drive/Math 115/Tim Lauck -Math115Spring2015/POWS/week2.tex",
+				"/home/hollandheese/Google Drive/TeX/Baseball.tex",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow1.tex",
+				"/home/hollandheese/.config/sublime-text-3/Packages/Pandown/Pandown.sublime-settings",
+				"/home/hollandheese/Google Drive/Math 44/exam1.tex",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Markdown to HTML.sublime-build",
+				"/home/hollandheese/Google Drive/Math 115/schedule.html",
+				"/home/hollandheese/Google Drive/Math 115/schedule.mdown",
+				"/home/hollandheese/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+				"/home/hollandheese/.cache/.fr-sfsnsT/Default (Linux).sublime-keymap",
+				"/home/hollandheese/.cache/.fr-psXZ8C/Pandown Markdown.sublime-build",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Pandown.sublime-settings",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Default.sublime-keymap",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+				"/home/hollandheese/.pandoc/templates/latex.template",
+				"/home/hollandheese/Default (Linux).sublime-keymap",
+				"/home/hollandheese/default-pandoc-config.json",
+				"/home/hollandheese/default-pandoc-config-plain.json",
+				"/home/hollandheese/Google Drive/Math 115/Syllabus/syllabus.html",
+				"/home/hollandheese/Google Drive/Math 115/syllabus.mdown",
+				"/home/hollandheese/Google Drive/Math 115/pandoc-config.json",
+				"/home/hollandheese/Google Drive/Math 115/index.mdown",
+				"/home/hollandheese/Google Drive/Math 115/github.html",
+				"/home/hollandheese/Google Drive/Math 115/html.template",
+				"/home/hollandheese/Downloads/pandoc-templates-master/templates/html.template",
+				"/home/hollandheese/Pandown Markdown.sublime-build",
+				"/home/hollandheese/Samples/pandoc-config.json",
+				"/home/hollandheese/Samples/github.html",
+				"/home/hollandheese/Google Drive/Math 115/Syllabus/syllabus.tex",
+				"/home/hollandheese/Pandown.sublime-settings",
+				"/home/hollandheese/Google Drive/Math 115/syllabus.html",
+				"/home/hollandheese/Google Drive/Math 115/syllabus.tex",
+				"/home/hollandheese/Google Drive/Math 40/Tests/FinalExamFall2010/FinalExam_Fall20112.tex",
+				"/home/hollandheese/pow1.md",
+				"/home/hollandheese/Google Drive/Math 44/exam3.tex",
+				"/home/hollandheese/Google Drive/Math 44/exam2.tex",
+				"/home/hollandheese/Google Drive/Math 115/Math115Spring2015/POWS/week1.tex",
+				"/home/hollandheese/LaTeX.sublime-build",
+				"/home/hollandheese/.config/sublime-text-3/Packages/AcademicMarkdown/AcademicMarkdown.sublime-settings",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/AcademicMarkdown.sublime-settings",
+				"/home/hollandheese/.conkyrc",
+				"/home/hollandheese/.config/tint2/tint2rc",
+				"/home/hollandheese/.config/obmenu-generator/config.pl",
+				"/home/hollandheese/.config/obmenu-generator/schema.pl",
+				"/home/hollandheese/Downloads/Solarized theme/Installation.txt",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/GutterColor.sublime-settings",
+				"/home/hollandheese/.config/sublime-text-3/Packages/LaTeXing/Default (Linux).sublime-keymap",
+				"/home/hollandheese/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+				"/home/hollandheese/Downloads/I looked at the script more closely and it actuall",
+				"/home/hollandheese/Downloads/apns-conf.xml"
+			],
+			"find":
+			{
+				"height": 39.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+					"author",
+					"\\item",
+					"\\cr",
+					"\\\\",
+					"}",
+					"\\hfill",
+					"\\{\\\\bf ",
+					"\\noindent",
+					"n.ispsn"
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+					"+",
+					"",
+					"**",
+					"",
+					"n.sprpre.ispsn"
+				],
+				"reverse": false,
+				"show_context": true,
+				"use_buffer2": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"incremental_find":
+			{
+				"height": 25.0
+			},
+			"input":
+			{
+				"height": 0.0
+			},
+			"menu_visible": true,
+			"output.exec":
+			{
+				"height": 115.0
+			},
+			"output.find_results":
+			{
+				"height": 0.0
+			},
+			"replace":
+			{
+				"height": 74.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_symbol":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"show_minimap": true,
+			"show_open_files": true,
+			"show_tabs": true,
+			"side_bar_visible": false,
+			"side_bar_width": 203.0,
+			"status_bar_visible": true,
+			"template_settings":
+			{
+			}
+		},
+		"new_window_width": 1195.0
+	},
+	"windows":
+	[
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+				]
+			},
+			"buffers":
+			[
+				{
+					"file": "/home/hollandheese/.ssh/id_rsa.pub",
+					"settings":
+					{
+						"buffer_size": 398,
+						"line_ending": "Unix"
+					}
+				}
+			],
+			"build_system": "",
+			"command_palette":
+			{
+				"height": 340.0,
+				"selected_items":
+				[
+					[
+						"pando",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"pandown",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"pandow",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"pandown l",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"install",
+						"Package Control: Install Package"
+					],
+					[
+						"pandown ht",
+						"Build: Pandown: HTML 5"
+					],
+					[
+						"pandown htm",
+						"Build: Pandown: HTML 5"
+					],
+					[
+						"pandown html",
+						"Build: Pandown: HTML 5"
+					],
+					[
+						"pandown lat",
+						"Build: Pandown: LaTeX"
+					],
+					[
+						"pandown open",
+						"Build: Pandown: OpenOffice Document"
+					],
+					[
+						"pandown op",
+						"Build: Pandown: OpenDocument XML"
+					],
+					[
+						"pandown wor",
+						"Build: Pandown: Word Document"
+					],
+					[
+						"packa",
+						"Package Control: Remove Package"
+					],
+					[
+						"pandown pdf",
+						"Build: Pandown: LaTeX - PDF"
+					],
+					[
+						"pand",
+						"Pandown: Build to Window"
+					],
+					[
+						"in",
+						"Package Control: Install Package"
+					],
+					[
+						"ins",
+						"Package Control: Install Package"
+					],
+					[
+						"colors",
+						"Colorsublime: Install Theme"
+					],
+					[
+						"color",
+						"Colorsublime: Browse Themes"
+					],
+					[
+						"insta",
+						"Package Control: Install Package"
+					],
+					[
+						"inst",
+						"Package Control: Install Package"
+					],
+					[
+						"men",
+						"View: Toggle Menu"
+					],
+					[
+						"pack",
+						"Package Control: Install Package"
+					],
+					[
+						"pac",
+						"Package Control: Install Package"
+					]
+				],
+				"width": 543.0
+			},
+			"console":
+			{
+				"height": 126.0,
+				"history":
+				[
+					"import urllib.request,os,hashlib; h = '2deb499853c4371624f5a07e27c334aa' + 'bf8c4e67d14fb0525ba4f89698a6d7e1'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+				]
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"file_history":
+			[
+				"/home/hollandheese/.local/bin/foobar2000",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+				"/home/hollandheese/Google Drive/Math 115/Schedule/schedule.mdown",
+				"/home/hollandheese/.config/sublime-text-3/Packages/Default/Preferences.sublime-settings",
+				"/home/hollandheese/.i3/config",
+				"/home/hollandheese/i3-master/status.sh",
+				"/home/hollandheese/Google Drive/Math 115/Syllabus/pandoc-config.json",
+				"/home/hollandheese/Google Drive/Math 115/Schedule/pandoc-config.json",
+				"/home/hollandheese/.pandoc/templates/school.latex",
+				"/home/hollandheese/.pandoc/templates/school-pow.latex",
+				"/home/hollandheese/.pandoc/templates/school.html5",
+				"/home/hollandheese/.pandoc/templates/school.html",
+				"/home/hollandheese/.pandoc/templates/school_old.latex",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow1.mdown",
+				"/home/hollandheese/Google Drive/Math 115/POW/pandoc-config.json",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow4.mdown",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow2.mdown",
+				"/home/hollandheese/Google Drive/Math 44/Chapter 8 - Functions/math44_ch8se2_wrksht.tex",
+				"/home/hollandheese/Google Drive/Math 115/Tim Lauck -Math115Spring2015/POWS/week1.tex",
+				"/home/hollandheese/.pandoc/school.css",
+				"/home/hollandheese/.cache/.fr-FP8jXP/Pandown Markdown.sublime-build",
+				"/home/hollandheese/.cache/.fr-umnPYu/predawn.sublime-theme",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow1.html",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Markdown.sublime-settings",
+				"/home/hollandheese/Google Drive/Math 115/Syllabus/syllabus.mdown",
+				"/home/hollandheese/.cache/.fr-6XM1Lh/zenburn.tmTheme",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/JSON.sublime-settings",
+				"/home/hollandheese/.emacs.d/hollandheese.org",
+				"/home/hollandheese/.pandoc/templates/school2.html5",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow4.html",
+				"/home/hollandheese/.pandoc/templates/school2.css",
+				"/home/hollandheese/.emacs.d/starter-kit-misc.org",
+				"/home/hollandheese/.emacs.d/places",
+				"/home/hollandheese/.emacs.d/starter-kit-org.org",
+				"/home/hollandheese/Downloads/emacs-starter-kit-master/starter-kit.org",
+				"/home/hollandheese/.emacs.d/init.el",
+				"/home/hollandheese/Downloads/emacs-starter-kit-master/dominating-file.el",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow2.html",
+				"/home/hollandheese/.emacs.d/README.md",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow3.mdown",
+				"/home/hollandheese/Google Drive/Math 115/Tim Lauck -Math115Spring2015/POWS/week4.tex",
+				"/home/hollandheese/Google Drive/Math 115/Tim Lauck -Math115Spring2015/POWS/week3.tex",
+				"/home/hollandheese/Google Drive/Math 115/Tim Lauck -Math115Spring2015/POWS/week2.tex",
+				"/home/hollandheese/Google Drive/TeX/Baseball.tex",
+				"/home/hollandheese/Google Drive/Math 115/POW/pow1.tex",
+				"/home/hollandheese/.config/sublime-text-3/Packages/Pandown/Pandown.sublime-settings",
+				"/home/hollandheese/Google Drive/Math 44/exam1.tex",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Markdown to HTML.sublime-build",
+				"/home/hollandheese/Google Drive/Math 115/schedule.html",
+				"/home/hollandheese/Google Drive/Math 115/schedule.mdown",
+				"/home/hollandheese/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+				"/home/hollandheese/.cache/.fr-sfsnsT/Default (Linux).sublime-keymap",
+				"/home/hollandheese/.cache/.fr-psXZ8C/Pandown Markdown.sublime-build",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Pandown.sublime-settings",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Default.sublime-keymap",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+				"/home/hollandheese/.pandoc/templates/latex.template",
+				"/home/hollandheese/Default (Linux).sublime-keymap",
+				"/home/hollandheese/default-pandoc-config.json",
+				"/home/hollandheese/default-pandoc-config-plain.json",
+				"/home/hollandheese/Google Drive/Math 115/Syllabus/syllabus.html",
+				"/home/hollandheese/Google Drive/Math 115/syllabus.mdown",
+				"/home/hollandheese/Google Drive/Math 115/pandoc-config.json",
+				"/home/hollandheese/Google Drive/Math 115/index.mdown",
+				"/home/hollandheese/Google Drive/Math 115/github.html",
+				"/home/hollandheese/Google Drive/Math 115/html.template",
+				"/home/hollandheese/Downloads/pandoc-templates-master/templates/html.template",
+				"/home/hollandheese/Pandown Markdown.sublime-build",
+				"/home/hollandheese/Samples/pandoc-config.json",
+				"/home/hollandheese/Samples/github.html",
+				"/home/hollandheese/Google Drive/Math 115/Syllabus/syllabus.tex",
+				"/home/hollandheese/Pandown.sublime-settings",
+				"/home/hollandheese/Google Drive/Math 115/syllabus.html",
+				"/home/hollandheese/Google Drive/Math 115/syllabus.tex",
+				"/home/hollandheese/Google Drive/Math 40/Tests/FinalExamFall2010/FinalExam_Fall20112.tex",
+				"/home/hollandheese/pow1.md",
+				"/home/hollandheese/Google Drive/Math 44/exam3.tex",
+				"/home/hollandheese/Google Drive/Math 44/exam2.tex",
+				"/home/hollandheese/Google Drive/Math 115/Math115Spring2015/POWS/week1.tex",
+				"/home/hollandheese/LaTeX.sublime-build",
+				"/home/hollandheese/.config/sublime-text-3/Packages/AcademicMarkdown/AcademicMarkdown.sublime-settings",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/AcademicMarkdown.sublime-settings",
+				"/home/hollandheese/.conkyrc",
+				"/home/hollandheese/.config/tint2/tint2rc",
+				"/home/hollandheese/.config/obmenu-generator/config.pl",
+				"/home/hollandheese/.config/obmenu-generator/schema.pl",
+				"/home/hollandheese/Downloads/Solarized theme/Installation.txt",
+				"/home/hollandheese/.config/sublime-text-3/Packages/User/GutterColor.sublime-settings",
+				"/home/hollandheese/.config/sublime-text-3/Packages/LaTeXing/Default (Linux).sublime-keymap",
+				"/home/hollandheese/Downloads/I looked at the script more closely and it actuall",
+				"/home/hollandheese/Downloads/apns-conf.xml"
+			],
+			"find":
+			{
+				"height": 30.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+					"author",
+					"\\item",
+					"\\cr",
+					"\\\\",
+					"}",
+					"\\hfill",
+					"\\{\\\\bf ",
+					"\\noindent",
+					"n.ispsn"
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+					"+",
+					"",
+					"**",
+					"",
+					"n.sprpre.ispsn"
+				],
+				"reverse": false,
+				"show_context": true,
+				"use_buffer2": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"groups":
+			[
+				{
+					"selected": 0,
+					"sheets":
+					[
+						{
+							"buffer": 0,
+							"file": "/home/hollandheese/.ssh/id_rsa.pub",
+							"semi_transient": false,
+							"settings":
+							{
+								"buffer_size": 398,
+								"regions":
+								{
+								},
+								"selection":
+								[
+									[
+										398,
+										398
+									]
+								],
+								"settings":
+								{
+									"BracketHighlighterBusy": false,
+									"WordCountShouldRun": true,
+									"WordCountSyntax": "plain text",
+									"bh_regions":
+									[
+										"bh_square",
+										"bh_square_center",
+										"bh_square_open",
+										"bh_square_close",
+										"bh_square_content",
+										"bh_tag",
+										"bh_tag_center",
+										"bh_tag_open",
+										"bh_tag_close",
+										"bh_tag_content",
+										"bh_single_quote",
+										"bh_single_quote_center",
+										"bh_single_quote_open",
+										"bh_single_quote_close",
+										"bh_single_quote_content",
+										"bh_angle",
+										"bh_angle_center",
+										"bh_angle_open",
+										"bh_angle_close",
+										"bh_angle_content",
+										"bh_curly",
+										"bh_curly_center",
+										"bh_curly_open",
+										"bh_curly_close",
+										"bh_curly_content",
+										"bh_regex",
+										"bh_regex_center",
+										"bh_regex_open",
+										"bh_regex_close",
+										"bh_regex_content",
+										"bh_c_define",
+										"bh_c_define_center",
+										"bh_c_define_open",
+										"bh_c_define_close",
+										"bh_c_define_content",
+										"bh_default",
+										"bh_default_center",
+										"bh_default_open",
+										"bh_default_close",
+										"bh_default_content",
+										"bh_unmatched",
+										"bh_unmatched_center",
+										"bh_unmatched_open",
+										"bh_unmatched_close",
+										"bh_unmatched_content",
+										"bh_round",
+										"bh_round_center",
+										"bh_round_open",
+										"bh_round_close",
+										"bh_round_content",
+										"bh_double_quote",
+										"bh_double_quote_center",
+										"bh_double_quote_open",
+										"bh_double_quote_close",
+										"bh_double_quote_content"
+									],
+									"syntax": "Packages/Text/Plain text.tmLanguage"
+								},
+								"translation.x": 0.0,
+								"translation.y": 0.0,
+								"zoom_level": 1.0
+							},
+							"stack_index": 0,
+							"type": "text"
+						}
+					]
+				}
+			],
+			"incremental_find":
+			{
+				"height": 30.0
+			},
+			"input":
+			{
+				"height": 0.0
+			},
+			"layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			},
+			"menu_visible": true,
+			"output.exec":
+			{
+				"height": 115.0
+			},
+			"output.find_results":
+			{
+				"height": 0.0
+			},
+			"position": "0,0,0,0,0,1370,25,2802,896,2806,900",
+			"project": "",
+			"replace":
+			{
+				"height": 56.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"select_symbol":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"selected_group": 0,
+			"settings":
+			{
+			},
+			"show_minimap": true,
+			"show_open_files": true,
+			"show_tabs": true,
+			"side_bar_visible": false,
+			"side_bar_width": 203.0,
+			"status_bar_visible": true,
+			"template_settings":
+			{
+			},
+			"window_id": 6,
+			"workspace_name": ""
+		}
+	],
+	"workspaces":
+	{
+		"recent_workspaces":
+		[
+		]
+	}
+}

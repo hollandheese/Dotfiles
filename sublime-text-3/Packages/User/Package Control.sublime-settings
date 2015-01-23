@@ -1,0 +1,38 @@
+{
+	"in_process_packages":
+	[
+	],
+	"installed_dependencies":
+	[
+		"0_package_control_loader",
+		"bz2",
+		"ssl-linux"
+	],
+	"installed_packages":
+	[
+		"AcademicMarkdown",
+		"AutoFileName",
+		"Base16 Color Schemes",
+		"BracketHighlighter",
+		"Citer",
+		"ColorPicker",
+		"Colorsublime",
+		"Gutter Color",
+		"LaTeX-cwl",
+		"LaTeXing",
+		"Markdown Extended",
+		"Numix Theme",
+		"oauthlib",
+		"Package Control",
+		"Pandown",
+		"Predawn",
+		"Solarized Color Scheme",
+		"SublimeREPL",
+		"Theme - amCoder",
+		"Theme - Brogrammer",
+		"Theme - Flatland",
+		"Theme - Spacegray",
+		"WordCount",
+		"zenburn"
+	]
+}

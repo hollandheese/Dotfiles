@@ -1,0 +1,24 @@
+{
+	"bold_folder_labels": true,
+	"caret_extra_width": 1,
+	"caret_style": "phase",
+	"color_scheme": "Packages/zenburn/zenburn.tmTheme",
+	"findreplace_small": true,
+	"font_face": "Source Code Pro for Powerline",
+	"font_options":
+	[
+		"no_round",
+		"bold"
+	],
+	"font_size": 9,
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"Vintage"
+	],
+	"line_padding_bottom": 1,
+	"line_padding_top": 1,
+	"sidebar_default": true,
+	"tabs_small": true,
+	"theme": "predawn-DEV.sublime-theme"
+}
