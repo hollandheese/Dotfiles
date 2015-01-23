@@ -1,0 +1,3 @@
+#!/bin/bash
+find . -name "*.epub" -exec ebook-convert {} {}.mobi \;
+find . -name "*.epub.mobi" -exec rename 's/\.epub\.mobi$/.mobi/' {} +

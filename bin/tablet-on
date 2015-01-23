@@ -1,0 +1,21 @@
+#!/bin/bash
+string1=`xinput | grep "Serial Wacom Tablet WACf004 eraser"`
+
+if [[ "$string1" =~ .*(1[1-9]) ]]
+then
+        eraser="${BASH_REMATCH[1]}"
+else 
+	eraser=0
+fi
+
+string2=`xinput | grep "Serial Wacom Tablet WACf004 stylus"`
+
+if [[ "$string2" =~ .*(1[1-9]) ]]
+then
+        stylus="${BASH_REMATCH[1]}"
+else 
+	stylus=0
+fi
+
+xinput -set-prop $eraser "Device Enabled" 1
+xinput -set-prop $stylus "Device Enabled" 1

@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# Find the line in "xrandr -q --verbose" output that contains current screen orientation and "strip" out current orientation.
+tablet-on
+
+rotation="$(xrandr -q --verbose | grep 'connected' | egrep -o  '\) (normal|left|inverted|right) \(' | egrep -o '(normal|left|inverted|right)')"
+
+# Grab the line in "xinput" output that contains the id for the eraser.
+string1=`xinput | grep "Serial Wacom Tablet WACf004 eraser"`
+
+# Strip out the id of the eraser.
+if [[ "$string1" =~ .*(1[1-9]) ]]
+then
+        eraser="${BASH_REMATCH[1]}"
+else 
+	eraser=0
+fi
+
+# Grab the line in "xinput" output that contains the id for the stylus
+string2=`xinput | grep "Serial Wacom Tablet WACf004 stylus"`
+
+# Strip out the id of the stylus.
+if [[ "$string2" =~ .*(1[1-9]) ]]
+then
+        stylus="${BASH_REMATCH[1]}"
+else 
+	stylus=0
+fi
+
+case "$rotation" in
+    normal)
+    # rotate to the right
+    xrandr -o right
+    xsetwacom set $stylus rotate cw
+    xsetwacom set $eraser rotate cw
+    ;;
+    right)
+    # rotate to normal
+    xrandr -o normal
+    # turn off the stylus
+    xinput -set-prop $eraser "Device Enabled" 0
+    xinput -set-prop $stylus "Device Enabled" 0
+    ;;
+esac
