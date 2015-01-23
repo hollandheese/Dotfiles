@@ -1,0 +1,430 @@
+#+TITLE: Starter Kit Bindings
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+
+* Starter Kit Bindings
+
+Key Bindings.
+
+** Map fn to Hyper
+#+source: fn-to-hyper
+#+begin_src emacs-lisp
+  (setq mac-function-modifier 'hyper)
+  ;; fix page-up and page-down keys
+  
+  (defun sfp-page-down (&optional arg)
+    (interactive "^P")
+    (setq this-command 'next-line)
+    (next-line
+     (- (window-text-height)
+        next-screen-context-lines)))
+  (put 'sfp-page-down 'isearch-scroll t)
+  (put 'sfp-page-down 'CUA 'move)
+  
+  (defun sfp-page-up (&optional arg)
+    (interactive "^P")
+    (setq this-command 'previous-line)
+    (previous-line
+     (- (window-text-height)
+        next-screen-context-lines)))
+  (put 'sfp-page-up 'isearch-scroll t)
+  (put 'sfp-page-up 'CUA 'move)
+  
+  (global-set-key [(H down)] 'scroll-up)
+  (global-set-key [(H up)]   'scroll-down) 
+  (require 'scroll-lock)
+  (setq scroll-preserve-screen-position t)
+  
+#+end_src
+
+** Align your code in a pretty way.
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x \\") 'align-regexp)
+#+end_src
+
+** Completion that uses many different methods to find options.
+#+begin_src emacs-lisp 
+(global-set-key (kbd "M-/") 'hippie-expand)
+#+end_src
+
+** Turn on the menu bar for exploring new modes
+#+begin_src emacs-lisp 
+(global-set-key [f1] 'menu-bar-mode)
+#+end_src
+
+** Font size
+#+begin_src emacs-lisp 
+(define-key global-map (kbd "C-+") 'text-scale-increase)
+(define-key global-map (kbd "C--") 'text-scale-decrease)
+#+end_src
+
+** Use Regex searches by default, and use Visual Regexp to construct them.
+Building regular expressions in Emacs is kind of a pain.  The visual-regexp pacakge is a very convenient way to dynamically build regular expressions for searching and replacing. You enter a minibuffer that lets you type the regexp and the prospective matches to the expression you type are highlighted in the main buffer. =M-x vr/replace= gives you global replacement and =M-x vr/query-replace= lets you decide to replace per match. Visual regexp replace is bound to =C-c r= and visual =query-replace-regexp= to =C-c q=. 
+
+#+begin_src emacs-lisp 
+  (global-set-key (kbd "C-s") 'isearch-forward-regexp)
+  (global-set-key (kbd "\C-r") 'isearch-backward-regexp)
+  (global-set-key (kbd "C-M-s") 'isearch-forward)
+  (global-set-key (kbd "C-M-r") 'isearch-backward)
+  
+  (require 'visual-regexp)
+  (define-key global-map (kbd "C-c r") 'vr/replace)
+  (define-key global-map (kbd "C-c q") 'vr/query-replace)
+#+end_src
+
+** File finding
+#+begin_src emacs-lisp 
+  (global-set-key (kbd "C-x M-f") 'ido-find-file-other-window)
+  (global-set-key (kbd "C-x C-p") 'find-file-at-point)
+  (global-set-key (kbd "C-c y") 'bury-buffer)
+  (global-set-key (kbd "C-c r") 'revert-buffer)
+  (global-set-key (kbd "M-`") 'file-cache-minibuffer-complete)
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (global-set-key (kbd "C-x f") 'recentf-ido-find-file)  
+#+end_src
+
+** Browse the Kill Ring
+    Conveniently navigate the kill-ring (ie, the cut/copy clipboard
+    history) in a pop-up buffer.
+#+srcname: kill-ring
+#+begin_src emacs-lisp 
+  (when (require 'browse-kill-ring nil 'noerror)
+  (browse-kill-ring-default-keybindings))
+#+end_src
+
+** Window switching.
+=C-x o= goes to the next window, Shift+direction arrow moves between frames.
+#+begin_src emacs-lisp 
+(windmove-default-keybindings) 
+(global-set-key (kbd "C-x O") (lambda () (interactive) (other-window -1))) ;; back one
+(global-set-key (kbd "C-x C-o") (lambda () (interactive) (other-window 2))) ;; forward two
+(setq windmove-wrap-around t)
+#+end_src
+
+** Resizing Windows on the fly
+When your frame (i.e., the main Emacs window) is split into different parts (e.g. using =C-x 2= or =C-x 3=), you sometimes want to resize these parts dynamically. This defines =Shift-C-[arrow keys]= so you can do this easily. 
+ 
+#+srcname: resize-splits
+#+begin_src emacs-lisp
+  ;; resizing 'windows' (i.e., inside the frame)
+  (global-set-key (kbd "S-C-<left>") 'shrink-window-horizontally)
+  (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+  (global-set-key (kbd "S-C-<down>") 'shrink-window)
+  (global-set-key (kbd "S-C-<up>") 'enlarge-window)  
+#+end_src
+
+** Rotate Windows in a Frame
+When windows get out of order, you can rotate them.
+
+#+source: rotate-windows
+#+begin_src emacs-lisp
+   (defun rotate-windows ()
+     "Rotate your windows" (interactive) (cond ((not (> (count-windows) 1)) (message "You can't rotate a single window!"))
+  (t
+   (setq i 1)
+   (setq numWindows (count-windows))
+   (while  (< i numWindows)
+     (let* (
+            (w1 (elt (window-list) i))
+            (w2 (elt (window-list) (+ (% i numWindows) 1)))
+            (b1 (window-buffer w1))
+            (b2 (window-buffer w2))
+            (s1 (window-start w1))
+            (s2 (window-start w2))
+            )
+       (set-window-buffer w1  b2)
+       (set-window-buffer w2 b1)
+       (set-window-start w1 s2)
+       (set-window-start w2 s1)
+       (setq i (1+ i)))))))
+
+  (global-set-key (kbd "C-c m") 'rotate-windows)
+#+end_src
+
+** Indentation help
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x a") 'join-line)
+#+end_src
+
+** Mark text between parentheses (a sexp) for selection
+ Mark text between parentheses. From [[http://stackoverflow.com/questions/5194417/how-to-mark-the-text-between-the-parentheses-in-emacs][this Stackoverflow answer]]. 
+#+source: backward-up-sexp
+#+begin_src emacs-lisp
+(defun backward-up-sexp (arg)
+  (interactive "p")
+  (let ((ppss (syntax-ppss)))
+    (cond ((elt ppss 3)
+           (goto-char (elt ppss 8))
+           (backward-up-sexp (1- arg)))
+          ((backward-up-list arg)))))
+
+(global-set-key [remap backward-up-list] 'backward-up-sexp)  
+#+end_src
+
+** Start eshell or switch to it if it's active.
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x m") 'eshell)
+#+end_src
+
+** Start a new eshell even if one is active.
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x M") (lambda () (interactive) (eshell t)))
+#+end_src
+
+** Start a regular shell if you prefer that.
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x M-m") 'shell)
+#+end_src
+
+** Smex replaces M-x
+    Smex replaces M-x, and is built on top of ido-mode. See
+    http://github.com/nonsequitur/smex or
+    http://www.emacswiki.org/emacs/Smex for details.  
+#+srcname: smex
+#+begin_src emacs-lisp
+  (require 'smex)
+  (smex-initialize)  
+  (global-set-key (kbd "M-x") 'smex)
+  (global-set-key (kbd "C-x C-m") 'smex) ;; supersedes binding in starter-kit-bindings.org
+  (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+  (global-set-key (kbd "C-x C-M") 'smex-major-mode-commands)
+  ;; This is your old M-x.
+  (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
+  (setq smex-show-unbound-commands t)
+  (smex-auto-update 30)
+#+end_src
+
+** If you want to be able to M-x without meta
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x C-m") 'smex)
+#+end_src
+    
+** Use Option as Meta key
+
+#+source: option-is-meta
+#+begin_src emacs-lisp 
+  (setq mac-option-modifier 'meta)    
+#+end_src
+
+** Use Command-Z as undo
+Use a little bit of Mac keys, but not all of them.
+#+source: mackeys1
+#+begin_src emacs-lisp 
+  (global-set-key [(meta z)] 'undo)
+  ;; (require 'redo+) 
+  ;;(global-set-key [(alt a)] 'mark-whole-buffer)
+  ;;(global-set-key [(alt v)] 'yank)
+  ;; (global-set-key [(alt c)] 'kill-ring-save)
+  ;;(global-set-key [(alt x)] 'kill-region)
+  ;;(global-set-key [(alt s)] 'save-buffer)
+  ;;(global-set-key [(alt f)] 'isearch-forward)
+  ;;(global-set-key [(alt g)] 'isearch-repeat-forward)
+  ;; (global-set-key [(alt z)] 'undo)
+    
+#+end_src
+
+** Fetch the contents at a URL, display it raw.
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-x h") 'view-url)
+#+end_src
+
+** Help should search more than just commands
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-h a") 'apropos)
+#+end_src
+
+** Should be able to eval-and-replace anywhere.
+#+begin_src emacs-lisp 
+(global-set-key (kbd "C-c e") 'eval-and-replace)
+#+end_src
+
+** Applications
+#+begin_src emacs-lisp 
+  
+  (global-set-key (kbd "C-c j") (lambda () (interactive) (switch-or-start 'jabber-connect "*-jabber-*")))
+  (global-set-key (kbd "C-c i") (lambda () (interactive) (switch-or-start (lambda ()
+                                                                       (rcirc-connect "irc.freenode.net"))
+                                                                     "*irc.freenode.net*")))
+  (global-set-key (kbd "C-c J") 'jabber-send-presence)
+  (global-set-key (kbd "C-c M-j") 'jabber-disconnect)
+  (global-set-key (kbd "C-x g") 'magit-status)
+#+end_src
+
+** Activate occur easily inside isearch
+#+begin_src emacs-lisp 
+(define-key isearch-mode-map (kbd "C-o")
+  (lambda () (interactive)
+    (let ((case-fold-search isearch-case-fold-search))
+      (occur (if isearch-regexp isearch-string (regexp-quote isearch-string))))))
+#+end_src
+
+** Org-mode
+A global binding for Org-mode (see [[file:starter-kit-org.org][starter-kit-org]])
+
+Org-mode supports [[http://orgmode.org/manual/Hyperlinks.html#Hyperlinks][links]], this command allows you to store links
+globally for later insertion into an Org-mode buffer.  See
+[[http://orgmode.org/manual/Handling-links.html#Handling-links][Handling-links]] in the Org-mode manual.
+#+begin_src emacs-lisp
+(define-key global-map "\C-cl" 'org-store-link)
+#+end_src
+** Interface with Ag ("The Silver Searcher")
+
+[[https://github.com/ggreer/the_silver_searcher][The Silver Searcher]] is a very fast, smart code search tool, similar to
+ack. Install it via homebrew. The emacs interface, `ag-mode`, is [[https://github.com/Wilfred/ag.el/#agel][described here]].
+
+#+source: ag
+#+begin_src emacs-lisp 
+  (require 'ag)
+  (define-key global-map "\C-x\C-a" 'ag) 
+  (define-key global-map "\C-x\C-r" 'ag-regexp)
+#+end_src
+
+** Winner mode
+    Remember the previous window configurations and jump back to them
+    as needed (as when, e.g., some other mode messes with your working
+    layout.) Rebind the default keys to C-c-up and C-c-down as in a moment 
+    we'll assign C-c-right for rotating windows.
+
+#+source: local-winner-mode
+#+begin_src emacs-lisp
+  (winner-mode 1)
+  (global-set-key (kbd "C-c <up>") 'winner-undo)
+  (global-set-key (kbd "C-c <down>") 'winner-redo)
+#+end_src
+
+** Don't Use Suspend Frame
+By default C-z is bound to "Suspend Frame", which minimizes Emacs. I find this of no use. Bind it to "Undo" instead. 
+
+#+source: disable-suspend-frame
+#+begin_src emacs-lisp
+  ;; I can't remember ever having meant to use C-z to suspend the frame
+  (global-set-key (kbd "C-z") 'undo)
+#+end_src
+
+** CUA mode for rectangle editing
+Sometimes very useful (but we don't use the core cua keys.)
+
+#+source: cua-rectangle
+#+begin_src emacs-lisp
+  (setq cua-enable-cua-keys nil)
+  (cua-mode)
+
+;; To start a rectangle, use [C-return] and extend it using the normal
+;; movement keys (up, down, left, right, home, end, C-home,
+;; C-end). Once the rectangle has the desired size, you can cut or
+;; copy it using C-w and M-w, and you can
+;; subsequently insert it - as a rectangle - using C-y.  So
+;; the only new command you need to know to work with cua-mode
+;; rectangles is C-return!
+;;
+;; Normally, when you paste a rectangle using C-v (C-y), each line of
+;; the rectangle is inserted into the existing lines in the buffer.
+;; If overwrite-mode is active when you paste a rectangle, it is
+;; inserted as normal (multi-line) text.
+;;
+;; And there's more: If you want to extend or reduce the size of the
+;; rectangle in one of the other corners of the rectangle, just use
+;; [return] to move the cursor to the "next" corner.  Or you can use
+;; the [M-up], [M-down], [M-left], and [M-right] keys to move the
+;; entire rectangle overlay (but not the contents) in the given
+;; direction.
+;;
+;; [C-return] cancels the rectangle
+;; [C-space] activates the region bounded by the rectangle
+
+;; cua-mode's rectangle support also includes all the normal rectangle
+;; functions with easy access:
+;;
+;; [M-a] aligns all words at the left edge of the rectangle
+;; [M-b] fills the rectangle with blanks (tabs and spaces)
+;; [M-c] closes the rectangle by removing all blanks at the left edge
+;;       of the rectangle
+;; [M-f] fills the rectangle with a single character (prompt)
+;; [M-i] increases the first number found on each line of the rectangle
+;;       by the amount given by the numeric prefix argument (default 1)
+;;       It recognizes 0x... as hexadecimal numbers
+;; [M-k] kills the rectangle as normal multi-line text (for paste)
+;; [M-l] downcases the rectangle
+;; [M-m] copies the rectangle as normal multi-line text (for paste)
+;; [M-n] fills each line of the rectangle with increasing numbers using
+;;       a supplied format string (prompt)
+;; [M-o] opens the rectangle by moving the highlighted text to the
+;;       right of the rectangle and filling the rectangle with blanks.
+;; [M-p] toggles virtual straight rectangle edges
+;; [M-P] inserts tabs and spaces (padding) to make real straight edges
+;; [M-q] performs text filling on the rectangle
+;; [M-r] replaces REGEXP (prompt) by STRING (prompt) in rectangle
+;; [M-R] reverse the lines in the rectangle
+;; [M-s] fills each line of the rectangle with the same STRING (prompt)
+;; [M-t] performs text fill of the rectangle with TEXT (prompt)
+;; [M-u] upcases the rectangle
+;; [M-|] runs shell command on rectangle
+;; [M-'] restricts rectangle to lines with CHAR (prompt) at left column
+;; [M-/] restricts rectangle to lines matching REGEXP (prompt)
+;; [C-?] Shows a brief list of the above commands.
+
+;; [M-C-up] and [M-C-down] scrolls the lines INSIDE the rectangle up
+;; and down; lines scrolled outside the top or bottom of the rectangle
+;; are lost, but can be recovered using [C-z].
+  
+#+end_src
+
+** Expand Region
+   Expand selected region by semantic units. Just keep pressing the key until it selects what you want.
+#+source: expand-region
+#+begin_src emacs-lisp
+    (require 'expand-region)
+    (global-set-key (kbd "C-=") 'er/expand-region)  
+#+end_src
+
+** Multiple Cursors
+   Use multiple cursors for search, replace, and text-cleaning tasks. For a demonstration, see http://emacsrocks.com/e13.html
+#+source: multiple-cursors
+#+begin_src emacs-lisp
+  (require 'multiple-cursors)
+  ;; When you have an active region that spans multiple lines, the following will add a cursor to each line:
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  
+  (global-set-key (kbd "C-S-c C-e") 'mc/edit-ends-of-lines)
+  (global-set-key (kbd "C-S-c C-a") 'mc/edit-beginnings-of-lines)
+  
+  ;; When you want to add multiple cursors not based on continuous lines, but based on keywords in the buffer, use:
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+  
+  ;; Rectangular region mode
+  (global-set-key (kbd "H-SPC") 'set-rectangular-region-anchor)
+  
+  ;; Mark more like this
+  (global-set-key (kbd "H-a") 'mc/mark-all-like-this)
+  (global-set-key (kbd "H-p") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "H-n") 'mc/mark-next-like-this)
+  (global-set-key (kbd "H-S-n") 'mc/mark-more-like-this-extended)
+  (global-set-key (kbd "H-S-a") 'mc/mark-all-in-region)
+#+end_src
+
+First mark the word, then add more cursors. To get out of multiple-cursors-mode, press <return> or C-g. The latter will first disable multiple regions before disabling multiple cursors. If you want to insert a newline in multiple-cursors-mode, use C-j.
+
+** Minimal mode
+   A nice clutter-free appearance with a reduced-size modeline, no
+   scroll bars, and no fringe indicators. Useful in conjunction with running Emacs full-screen.
+#+source: minimal-mode
+#+begin_src emacs-lisp
+  (set-fringe-mode '(5 . 5))
+  (require 'minimal)
+  (global-set-key (kbd "C-c s") 'minimal-mode)
+#+end_src
+
+** Closing
+#+begin_src emacs-lisp 
+(provide 'starter-kit-bindings)
+;;; starter-kit-bindings.el ends here
+#+end_src
+
+#+source: message-line
+#+begin_src emacs-lisp
+  (message "Starter Kit Bindings loaded.")
+#+end_src
+  

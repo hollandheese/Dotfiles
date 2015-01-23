@@ -1,0 +1,42 @@
+* Starter kit yasnippet
+
+Yasnippet is a snippet expansion system for Emacs. It uses short phrases and the tab key to trigger the insertion of frequently-used snippets of code or text in your document. 
+
+** Load the yasnippet bundle
+#+begin_src emacs-lisp :tangle yes
+  (add-to-list 'load-path
+                 (expand-file-name  "yasnippet"
+                                    (expand-file-name "elpa"
+                                                      dotfiles-dir)))
+  (require 'yasnippet)
+;;  (yas/set-ac-modes)
+;;  (yas/enable-emacs-lisp-paren-hack)
+  (yas/global-mode 1)
+#+end_src
+
+Load the snippets defined in the package's =./snippets/= directory, and local snippets from the =./local-snippets/= directory. 
+
+#+begin_src emacs-lisp :tangle yes
+  (yas/load-directory (expand-file-name "snippets" dotfiles-dir))
+ 
+#+end_src
+
+** Load Autocomplete
+#+begin_src emacs-lisp 
+  (require 'auto-complete)
+  (require 'auto-complete-config)
+  (global-auto-complete-mode t)
+  (add-to-list 'ac-dictionary-directories (expand-file-name "auto-complete" dotfiles-dir))
+  (setq ac-modes (append ac-modes '(org-mode))) 
+  (ac-config-default)
+  (define-key ac-complete-mode-map [tab] 'ac-expand)
+  (setq ac-auto-start 4)
+  (ac-flyspell-workaround)
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+  (define-key ac-completing-map (kbd "C-c h") 'ac-quick-help)  
+#+end_src 
+
+#+source: message-line
+#+begin_src emacs-lisp
+  (message "Starter Kit Completion loaded.")
+#+end_src

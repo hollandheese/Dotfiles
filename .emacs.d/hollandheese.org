@@ -1,0 +1,487 @@
+#+TITLE: Local User Customizations
+#+OPTIONS: toc:nil num:nil ^:nil
+
+* Starter Kit kjhealy
+This file contains local customizations---ones that in some cases
+you will not be able to just drop in and use because, e.g., they
+involve references to particular files on my own machine. It's
+included here for completeness, and as and example of the kind of
+things you might put in your own user-specific file.
+
+To use the customizations here yourself, /you must change the name of
+ this file to match your own user name or system name/. Those are the
+ values of the Emacs variables =user-login-name= or =system-name=, so
+ that it will be picked up by =init.el= when Emacs starts up, and get
+ loaded properly. To find the current value of these variables on your
+ system, launch emacs and do =C-h-v system-name [RET]= or =C-h-v
+ user-login-name [RET]=. For example, on my system =user-login-name=
+ is 'kjhealy', so this file is named =kjhealy.org=, and when Emacs
+ starts up with the starter kit it creates the file =kjhealy.el=.
+ 
+You will also need to change the values for the location of bibtex
+ databases, pandoc and orgmode-mobile specified below, and some other
+ settings. *Search for 'kjhealy' in this file* to find the paths that
+ need to be updated. Change them as needed or delete them if you don't
+ need these features. 
+
+Finally, the [[*Local%20Org-mode%20XeLaTeX%20Export%20Settings][Local Org-mode XeLaTeX Export Settings]] section below has
+ references to fonts that you may not have available on your
+ system. Change the references as appropriate, or comment out or
+ delete the lines.
+
+** Local Miscellaneous Settings
+*** Color Theme Tweaks
+The theme package is loaded in =starter-kit-misc.org=. The settings
+here adjust the height of some headings in Org and LaTeX mode, as well
+as turning off the sans-serif heading style that AucTeX defaults to.
+
+#+srcname: local-settings
+#+begin_src emacs-lisp
+  (add-hook 'latex-mode-hook 
+            (lambda ()
+              (set-face-attribute 'font-latex-sectioning-5-face nil :inherit nil :foreground "#b58900")
+              (set-face-attribute 'font-latex-sectioning-0-face nil :height 3)
+              (set-face-attribute 'font-latex-sectioning-1-face nil :height 2)
+              (set-face-attribute 'font-latex-sectioning-2-face nil :height 1.5)
+              (set-face-attribute 'font-latex-sectioning-3-face nil :height 1.2)
+              (set-face-attribute 'font-latex-sectioning-4-face nil :height 1.0)))
+  
+   (add-hook 'org-mode-hook 
+             (lambda ()
+               (set-face-attribute 'org-level-1 nil :height 1.5)
+               (set-face-attribute 'org-level-2 nil :height 1.2)
+               (set-face-attribute 'org-level-3 nil :height 1.1)
+               (set-face-attribute 'org-level-4 nil :height 1.1)
+               (set-face-attribute 'org-level-5 nil :height 1.1)))
+#+end_src
+
+
+*** Dired-x
+Dired extensions
+#+source: Dired-x
+#+begin_src emacs-lisp
+  (load "dired-x")
+#+end_src
+
+*** Dired open multiple files
+In dired mode, visit all marked files using. Bound to the "F" key. 
+#+source: dired-F
+#+begin_src emacs-lisp
+  (eval-after-load "dired"
+  '(progn
+     (define-key dired-mode-map "F" 'my-dired-find-file)
+     (defun my-dired-find-file (&optional arg)
+       "Open each of the marked files, or the file under the point, or when prefix arg, the next N files "
+       (interactive "P")
+       (let* ((fn-list (dired-get-marked-files nil arg)))
+         (mapc 'find-file fn-list)))))
+#+end_src
+
+*** Stripe Dired buffers
+#+name: stripe-dired
+#+begin_src emacs-lisp
+(require 'stripe-buffer)
+(add-hook 'org-mode-hook 'org-table-stripes-enable)
+(add-hook 'dired-mode-hook 'stripe-listify-buffer)  
+#+end_src
+
+*** Ace Jump Mode
+Quickly move to spots in the buffer.
+
+#+name: ace-jump
+#+begin_src emacs-lisp
+  
+  (require 'ace-jump-mode)
+  (define-key global-map (kbd "C-o") 'ace-jump-mode)
+  
+#+end_src
+  
+** Local LaTeX settings
+*** In-text Smart Quotes (XeLaTeX only)
+    Redefine TeX-open-quote and TeX-close-quote to be smart quotes by default. Below, in the local org-mode settings, we'll also map the relevant function to a key we can use in org-mode, too. If you don't use XeLaTeX for processing all your =.tex= files, you should disable this option.
+
+#+source: smart-quotes
+#+begin_src emacs-lisp
+  (setq TeX-open-quote "“")
+  (setq TeX-close-quote "”")
+#+end_src
+
+*** SyncTeX, PDF mode, Skim
+Set up AUCTeX to work with the Skim PDF viewer.
+
+#+srcname: sync
+#+begin_src emacs-lisp
+    ;; Synctex with Skim
+    (add-hook 'TeX-mode-hook
+    (lambda ()
+    (add-to-list 'TeX-output-view-style
+    '("^pdf$" "."
+     "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b")))
+     )
+    
+  (setq TeX-view-program-selection '((output-pdf "PDF Viewer")))
+  (setq TeX-view-program-list
+       '(("PDF Viewer" "/Applications/Skim.app/Contents/SharedSupport/displayline -b -g %n %o %b")))
+     
+    ;; Make emacs aware of multi-file projects
+    ;; (setq-default TeX-master nil)
+#+end_src
+
+*** Local RefTeX Settings
+Tell RefTeX where the bibliography files are. 
+
+#+srcname: local-reftex
+#+begin_src emacs-lisp    
+    ;; Make RefTex able to find my local bib files
+    (setq reftex-bibpath-environment-variables
+    '("/home/hollandheese/texmf/bibtex/bib"))
+
+    ;; Default bibliography
+    (setq reftex-default-bibliography
+    '("/home/hollandheese/texmf/bibtex/bib/Thesis.bib"))
+#+end_src
+
+*** Local vc commands
+    Run the vc shellscript before running xelatex with C-c c (instead
+    of C-c C-c for regular compile). This assumes you're using the VC
+    LaTeX package, have vc in your path, and have vc-awk in the
+    directory you're working in.
+
+#+srcname: vc-command
+#+begin_src emacs-lisp
+    (fset 'run-vc-then-xelatex
+    [?\M-! ?v ?c return ?\C-c ?\C-c return])
+    (global-set-key (kbd "C-c c") 'run-vc-then-xelatex);; Run the VC command before running xelatex
+    (fset 'run-vc-then-xelatex
+    [?\M-! ?v ?c return ?\C-c ?\C-c return])
+    (global-set-key (kbd "C-c c") 'run-vc-then-xelatex)
+#+end_src
+
+    Or just run vc alone --- this is useful when writing LaTeX files
+    using org-mode. (See the org-mode customizations below).
+
+#+source: vc-alone
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c v")
+                      (lambda ()
+                        (interactive)
+                        (shell-command "vc")))
+
+#+end_src
+
+** Local Pandoc Support 
+A pandoc menu for markdown and tex files. 
+#+src-name: pandoc_mode
+#+begin_src emacs-lisp 
+  (load "pandoc-mode")
+  (add-hook 'markdown-mode-hook 'pandoc-mode)
+  (add-hook 'TeX-mode-hook 'pandoc-mode)
+  (add-hook 'pandoc-mode-hook 'pandoc-load-default-settings)
+#+end_src
+
+** Local Polymode Support
+Polymode is a new package that supports multiple modes inside a single buffer. It is aimed particularly at literate programming approaches and supports, e.g., R and markdown in a single =.Rmd= file. So it is very useful with knitr in R, given that ESS does not yet fully support =.Rmd= files.
+
+#+source: Polymode
+#+begin_src emacs-lisp
+  (require 'poly-R)
+  (require 'poly-markdown)
+  ;;; polymode + markdown
+  (add-to-list 'auto-mode-alist '("\\.md" . poly-markdown-mode))
+
+  ;;; polymode + R
+  (add-to-list 'auto-mode-alist '("\\.Snw" . poly-noweb+r-mode))
+  (add-to-list 'auto-mode-alist '("\\.Rnw" . poly-noweb+r-mode))
+  (add-to-list 'auto-mode-alist '("\\.Rmd" . poly-markdown+r-mode))
+
+#+end_src
+
+** Local iBuffer Settings
+   Manage a lot of buffers easily with C-x C-b. Already set up
+   elsewhere in the starter kit. Add local configuration here, e.g.,
+   display categories.
+#+srcname: iBuffer-custom
+#+begin_src emacs-lisp 
+  (setq ibuffer-saved-filter-groups
+      '(("home"
+	 ("emacs-config" (or (filename . ".emacs.d")
+			     (filename . "emacs-config")))
+	 ("Org" (or (mode . org-mode)
+		    (filename . "OrgMode")))
+	 ("Web Dev" (or (mode . html-mode)
+			(mode . css-mode)))
+	 ("Magit" (name . "\*magit"))
+	 ("ESS" (mode . ess-mode))
+         ("LaTeX" (mode . latex-mode))
+	 ("Help" (or (name . "\*Help\*")
+		     (name . "\*Apropos\*")
+		     (name . "\*info\*"))))))
+
+        (add-hook 'ibuffer-mode-hook 
+	             '(lambda ()
+	             (ibuffer-switch-to-saved-filter-groups "home")))
+       (setq ibuffer-show-empty-filter-groups nil)                     
+       (setq ibuffer-expert t)
+       (add-hook 'ibuffer-mode-hook 
+       '(lambda ()
+       (ibuffer-auto-mode 1)
+       (ibuffer-switch-to-saved-filter-groups "home")))
+#+end_src
+
+** Local Org-mode Settings
+*** Smart-quote binding
+When in an org-mode buffer, bind TeX-insert-quote to =C-c "=. Turned off by default. 
+
+#+source: org-mode-smartquote-key
+#+begin_src emacs-lisp :tangle no
+  (add-hook 'org-mode-hook 'smart-quote-keys)
+  
+  (defun smart-quote-keys ()
+    (require 'typopunct)
+    (typopunct-change-language 'english)
+    (local-set-key (kbd "C-c \'") 'typopunct-insert-single-quotation-mark)
+    (local-set-key (kbd "C-c \"") 'typopunct-insert-quotation-mark)
+    )
+    
+  
+  
+#+end_src
+
+   
+
+
+*** Babel Settings
+   Configure org-mode so that when you edit source code in an indirect buffer (with C-c '), the buffer is opened in the current window. That way, your window organization isn't broken when switching.
+
+#+source: orgmode-indirect-buffer-settings
+#+begin_src emacs-lisp
+  (setq org-src-window-setup 'current-window)
+#+end_src
+
+*** XeLaTeX and pdfLaTeX Export Settings
+   Configure org-mode to export directly to PDF using  xelatex, compiling the bibliography as it goes, with my preferred setup in each case. There is a good deal of local stuff in this section. The required style files used below are available at https://github.com/kjhealy/latex-custom-kjh. You may need to adjust or remove some of these settings depending on your preferences and local configuration.
+
+#+source: orgmode-xelatex-export
+#+begin_src emacs-lisp
+  
+    ;; Choose either listings or minted for exporting source code blocks.
+    ;; Using minted (as here) requires pygments be installed. To use the
+    ;; default listings package instead, use
+    ;; (setq org-latex-listings t)
+    ;; and change references to "minted" below to "listings"
+    (setq org-latex-listings 'minted)
+    
+    ;; default settings for minted code blocks.
+    ;; bg will need to be defined in the preamble of your document. It's defined in  org-preamble-xelatex.sty below.
+    (setq org-latex-minted-options
+          '(;("frame" "single")
+            ("bgcolor" "bg") 
+            ("fontsize" "\\small")
+            ))
+    
+  ;; turn off the default toc behavior; deal with it properly in headers to files.
+  (defun org-latex-no-toc (depth)  
+    (when depth
+        (format "%% Org-mode is exporting headings to %s levels.\n"
+                depth)))
+  (setq org-latex-format-toc-function 'org-latex-no-toc)
+  
+  ;; note the insertion of the \input statement for the vc information 
+  (add-to-list 'org-latex-classes
+                 '("memarticle"
+                   "\\documentclass[11pt,oneside,article]{memoir}\n\\input{vc} % vc package"
+                    ("\\section{%s}" . "\\section*{%s}")
+                    ("\\subsection{%s}" . "\\subsection*{%s}")
+                    ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                    ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                    ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  
+  (add-to-list 'org-latex-classes
+                 '("membook"
+                   "\\documentclass[11pt,oneside]{memoir}\n\\input{vc} % vc package"
+                   ("\\chapter{%s}" . "\\chapter*{%s}")
+                   ("\\section{%s}" . "\\section*{%s}")
+                   ("\\subsection{%s}" . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}" . "\\subsubsection*{%s}")))
+   
+  ;; LaTeX compilation command. For orgmode docs we just always use xelatex for convenience.
+  ;; You can change it to pdflatex if you like, just remember to make the adjustments to the packages-alist below.
+  (setq org-latex-pdf-process '("latexmk -pdflatex='xelatex -synctex=1 --shell-escape' -pdf %f"))
+  
+  ;; Default packages included in the tex file. As before, org-preamble-xelatex is part of latex-custom-kjh.
+  ;; There's org-preamble-pdflatex as well, if you wish to use that instead.
+  (setq org-latex-default-packages-alist nil)     
+  (setq org-latex-packages-alist
+          '(("minted" "org-preamble-xelatex" t)
+            ("" "graphicx" t)
+            ("" "longtable" nil)
+            ("" "float" ))) 
+#+end_src
+
+*** ebib and citation settings
+    ebib is a bibtex database manager that works inside emacs. It can
+    talk to org-mode. See [[http://orgmode.org/worg/org-tutorials/org-latex-export.html#sec-17_2][this Worg tutorial]] for details. 
+#+source: ebib-setup
+#+begin_src emacs-lisp
+    (org-add-link-type "ebib" 'ebib)
+  
+   (org-add-link-type 
+     "cite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "cite:" desc)))
+               (format "\\cite{%s}" path)
+               (format "\\cite[%s]{%s}" desc path)
+               )))))
+  
+   (org-add-link-type 
+     "parencite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "parencite:" desc)))
+               (format "\\parencite{%s}" path)
+               (format "\\parencite[%s]{%s}" desc path)
+  )))))
+  
+  (org-add-link-type 
+     "textcite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "textcite:" desc)))
+               (format "\\textcite{%s}" path)
+               (format "\\textcite[%s]{%s}" desc path)
+  )))))
+  
+  (org-add-link-type 
+     "autocite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "autocite:" desc)))
+               (format "\\autocite{%s}" path)
+           (format "\\autocite[%s]{%s}" desc path)
+  )))))
+  
+  (org-add-link-type 
+   "footcite" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "footcite:" desc)))
+           (format "\\footcite{%s}" path)
+         (format "\\footcite[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+   "fullcite" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "fullcite:" desc)))
+           (format "\\fullcite{%s}" path)
+         (format "\\fullcite[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+   "citetitle" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "citetitle:" desc)))
+           (format "\\citetitle{%s}" path)
+         (format "\\citetitle[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+   "citetitles" 'ebib
+   (lambda (path desc format)
+     (cond
+      ((eq format 'latex)
+       (if (or (not desc) (equal 0 (search "citetitles:" desc)))
+           (format "\\citetitles{%s}" path)
+         (format "\\citetitles[%s]{%s}" desc path)
+         )))))
+  
+  (org-add-link-type 
+     "headlessfullcite" 'ebib
+     (lambda (path desc format)
+       (cond
+        ((eq format 'latex)
+         (if (or (not desc) (equal 0 (search "headlessfullcite:" desc)))
+               (format "\\headlessfullcite{%s}" path)
+               (format "\\headlessfullcite[%s]{%s}" desc path)
+  )))))   
+#+end_src
+
+*** HTML export Settings
+Create =html= files form the =org= sources, to help with documentation. To set up org-mode for publishing projects to HTML you will need to change these settings, as they apply only to the Starter Kit. 
+
+#+source: html-export-settings
+#+begin_src emacs-lisp
+  (setq org-publish-project-alist
+         '(("org"
+            :base-directory "~/.emacs.d/"
+            :publishing-directory "~/Documents/websites/esk/"
+            :publishing-function org-html-publish-to-html
+            :auto-sitemap t            
+            :sitemap-filename "index.org"
+            :sitemap-title "Emacs Starter Kit for the Social Sciences: Documentation"
+            :section-numbers t
+            :table-of-contents t
+            :html-head "<link rel=\"stylesheet\"
+                   href=\"http://kieranhealy.org/css/org.css\"
+                   type=\"text/css\"/>"            )))
+  
+  (setq org-html-postamble nil)
+  
+#+end_src
+
+** IRC
+Sometimes useful for getting help on R or Emacs. 
+#+source: rirc-configuration
+#+begin_src emacs-lisp
+  ;; connect to irc on invocation but don't autojoin any channels
+  (require 'rcirc)
+  (add-to-list 'rcirc-server-alist
+                       '("irc.freenode.net"))
+#+end_src
+
+** Final Custom elements
+Some last tweaks. 
+
+#+srcname: final-custom
+#+begin_src emacs-lisp
+  ;; minimize fringe
+  (setq-default indicate-empty-lines nil)
+
+  ;; Add keybindings for commenting regions of text
+  (global-set-key (kbd "C-c ;") 'comment-or-uncomment-region)
+  (global-set-key (kbd "M-'") 'comment-or-uncomment-region)
+
+  ;; Base dir
+  (cd "~/")
+
+  ;; custom variables kludge. Why can't I get these to work via setq?
+  (custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+  '(LaTeX-XeTeX-command "xelatex -synctex=1")
+  '(TeX-engine (quote xetex))
+  ;; '(TeX-view-program-list (quote (("Skim" "/Applications/Skim.app/Contents/SharedSupport/displayline %n %o %b"))))
+  ;; '(TeX-view-program-selection (quote (((output-dvi style-pstricks) "dvips and gv") (output-dvi "xdvi") (output-pdf "Skim") (output-html "xdg-open"))))
+  '(blink-cursor-mode nil)
+  '(text-mode-hook (quote (text-mode-hook-identify)))
+  )
+#+end_src
+   
+
+   
+#+source: message-line
+#+begin_src emacs-lisp
+  (message "Starter Kit User File loaded.")
+#+end_src

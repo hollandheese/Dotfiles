@@ -1,0 +1,35 @@
+;;; -*- coding: utf-8 -*-
+
+;; ----- ido-last-directory-list -----
+(
+ ("/home/hollandheese/Google Drive/Math 115/" . "POW/")
+ ("/home/hollandheese/Google Drive/" . "Math 115/")
+)
+
+;; ----- ido-work-directory-list -----
+(
+ "/home/hollandheese/.i3/"
+ "/home/hollandheese/Google Drive/Math 115/POW/"
+)
+
+;; ----- ido-work-file-list -----
+(
+ "config"
+ "pow3.mdown"
+)
+
+;; ----- ido-dir-file-cache -----
+(
+ ("/home/hollandheese/.i3/" (21697 22892 28293 586000) "../" "./" ".config.un~" "config")
+
+ ("/home/hollandheese/" (21697 24375 595449 255000) ".viminfo" ".julia_history" ".vimperator/" ".asoundrc" ".face" ".xsession-errors" ".pentadactylrc" ".bash_history" ".miro/" ".steam/" ".vim/" ".cinnamon/" ".icons/" ".w3m/" "Documents/" ".Xmodmap" ".steampid" "..i3blocks.conf.un~" "..compton.conf.un~" "texmf/" ".gstreamer-0.10/" ".dbus/" "..pentadactylrc.un~" ".bash_logout" ".adobe/" ".esd_auth" ".dropbox/" ".pandoc/" ".ds9 100.txt.un~" ".bash_profile" ".parallel/" ".FACE" ".anaconda" "..bashrc.un~" ".paradoxinteractive/" ".config/" ".gnome2/" ".local/" ".themes/" ".bashrc" "..bash_profile.un~" ".mozilla/" ".i3blocks.conf" ".gnupg/" "..xsettingsd.un~" ".pulse-cookie" ".gitignore" ".hplip/" ".i3/" ".xsettingsd" "Pictures/" "Downloads/" ".cache/" ".npm/" ".texlive2014/" ".ssh/" "../" ".steampath" ".pki/" "Samples/" "./" ".gnome/" ".gtk-bookmarks" ".dmrc" "Audiobooks/" ".kde4/" ".ICEauthority" "..asoundrc.un~" ".xsession-errors.old" "Videos/" ".node-gyp/" ".gimp-2.8/" ".bzr.log" ".ggg.un~" ".ghc/" "Desktop/" ".macromedia/" ".subversion/" ".latexmkrc" ".thumbnails/" ".emacs.d/" ".moc/" "..emacs.un~" ".gtkrc-2.0" ".wine/" ".fonts/" "Torrents/" "Music/" ".Xauthority" "Google Drive/" ".android/" "..xinitrc.un~" ".wifi.txt.un~" "Books/" ".Mathematica/")
+
+ ("/home/hollandheese/Google Drive/Math 115/POW/" (21693 45128 391056 189000) "pow3.html" "pow2.mdown" "pow1.mdown" "pow2.html" "pow2.pdf" "../" "./" "pow3.mdown" "pow1.html" "pow1.pdf" "pow4.mdown" "pow4.html" "pow3.pdf" "pow4.pdf" "pandoc-config.json")
+
+ ("/home/hollandheese/Google Drive/Math 115/" (21693 45112 410804 0) "Tim Lauck -Math115Spring2015/" "POW/" "MATH115_Workbook_Spring2015.pdf" "Syllabus/" "../" "./" "Schedule/" "MATH115_LectureNotes_Spring2015.pdf" "pandoc-config.json")
+
+ ("/home/hollandheese/Google Drive/" (21693 45139 131222 0) "TeX/" "qt5.png" "texmf/" "Math 115/" "wifi.txt" "Mathematica/" "Python/" "Presentations/" "LTEfix.zip" "unix/" "Math 44/" "Pictures/" "Downloads/" "../" "./" "Math 40/" "PDF/" "coreboot-peppy-seabios-181214.rom" "qt5s.png" "Programming/" "History Papers/" "Taxes/" "Fonts/" "MATLAB/" "Resume/" "Research/" "Stat 504/" "backup-160115.rom" "Greek/")
+)
+
+;; ----- ido-unc-hosts-cache -----
+t

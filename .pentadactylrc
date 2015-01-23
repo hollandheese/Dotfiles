@@ -1,0 +1,11 @@
+hi FontFixed -append font-size: 9pt !important;
+set guioptions=r
+" some groups -- such as `CmdLine` and `StatusLine` -- are linked by default
+hi -append -link FontFixed Hint
+hi -append -link FontFixed CompItem
+hi -append -link FontFixed CompTitle
+
+nnoremap ; :
+nnoremap : ;
+set passkeys+=mail.google.com:jk<CR>,gi
+set passkeys+=feedbin.com:jk<CR>,gi

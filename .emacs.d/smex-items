@@ -1,0 +1,17 @@
+
+;; ----- smex-history -----
+(
+ R
+ starter-kit-compile
+ S
+ ag
+ cd
+ mf
+ 5x5
+)
+
+;; ----- smex-data -----
+(
+ (starter-kit-compile . 1)
+ (R . 3)
+)

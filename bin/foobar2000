@@ -1,0 +1,8 @@
+#!/bin/sh
+cd ~/.foobar2000/
+if [ "$1" != "" ]; then
+filename=`echo z:$1 | sed 's/\\//\\\\/g'`
+wine foobar2000.exe "$filename" &
+else
+wine foobar2000.exe &
+fi

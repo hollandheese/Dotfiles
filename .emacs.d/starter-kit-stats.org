@@ -1,0 +1,108 @@
+#+TITLE: Starter Kit Statistics
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:starter-kit.org][Emacs Starter Kit]]. 
+
+This file provides settings for ESS and R. 
+
+* R and ESS
+   Load ESS: Emacs Speaks Statistics, and several further tweaks for
+ R. 
+ 
+** Load ESS 
+#+src-name: ess-mode
+#+begin_src emacs-lisp
+  (require 'ess-site)
+#+end_src
+** Coding Hooks
+#+source: ide-ess
+#+begin_src emacs-lisp
+  (add-hook 'ess-mode-hook 'run-starter-kit-coding-hook)
+  (add-hook 'ess-R-post-run-hook 'smartparens-mode)
+#+end_src
+
+** Define Rnw-mode and make LaTeX aware of it. 
+#+srcname: misc-r
+#+begin_src emacs-lisp :tangle no
+(add-to-list 'auto-mode-alist '("\\.Rnw\\'" . Rnw-mode))
+(add-to-list 'auto-mode-alist '("\\.Snw\\'" . Rnw-mode))
+(add-to-list 'auto-mode-alist '("\\.Rmd\\'" . Rnw-mode))
+
+;; Make TeX and RefTex aware of Snw and Rnw files
+(setq reftex-file-extensions
+      '(("Snw" "Rnw" "nw" "tex" ".tex" ".ltx") ("bib" ".bib")))
+(setq TeX-file-extensions
+      '("Snw" "Rnw" "nw" "tex" "sty" "cls" "ltx" "texi" "texinfo"))
+
+;; Lets you do 'C-c C-c Sweave' from your Rnw file
+(add-hook 'Rnw-mode-hook
+	  (lambda ()
+	    (add-to-list 'TeX-command-list
+			 '("Sweave" "R CMD Sweave %s"
+			   TeX-run-command nil (latex-mode) :help "Run Sweave") t)
+	    (add-to-list 'TeX-command-list
+			 '("LatexSweave" "%l %(mode) %s"
+			   TeX-run-TeX nil (latex-mode) :help "Run Latex after Sweave") t)
+	    (setq TeX-command-default "Sweave")))
+
+
+#+end_src
+
+** Use Knitr to process Sweave documents
+#+source: knitr-swv
+#+begin_src emacs-lisp
+  (setq ess-swv-processor "'knitr")
+#+end_src
+ 
+** Make shift-enter to a lot in ESS.
+ Use shift-enter to split window & launch R (if not running), execute
+ highlighted region (if R running & area highlighted), or execute
+ current line (and move to next line, skipping comments). Nice. See
+ http://www.emacswiki.org/emacs/EmacsSpeaksStatistics,
+ FelipeCsaszar. Adapted to split vertically instead of horizontally. 
+#+src-name: ess-shift-enter
+#+begin_src emacs-lisp
+(setq ess-ask-for-ess-directory nil)
+  (setq ess-local-process-name "R")
+  (setq ansi-color-for-comint-mode 'filter)
+  (setq comint-scroll-to-bottom-on-input t)
+  (setq comint-scroll-to-bottom-on-output t)
+  (setq comint-move-point-for-output t)
+  (defun my-ess-start-R ()
+    (interactive)
+    (if (not (member "*R*" (mapcar (function buffer-name) (buffer-list))))
+      (progn
+	(delete-other-windows)
+	(setq w1 (selected-window))
+	(setq w1name (buffer-name))
+	(setq w2 (split-window w1 nil t))
+	(R)
+	(set-window-buffer w2 "*R*")
+	(set-window-buffer w1 w1name))))
+  (defun my-ess-eval ()
+    (interactive)
+    (my-ess-start-R)
+    (if (and transient-mark-mode mark-active)
+	(call-interactively 'ess-eval-region)
+      (call-interactively 'ess-eval-line-and-step)))
+  (add-hook 'ess-mode-hook
+	    '(lambda()
+	       (local-set-key [(shift return)] 'my-ess-eval)))
+  (add-hook 'inferior-ess-mode-hook
+	    '(lambda()
+	       (local-set-key [C-up] 'comint-previous-input)
+	       (local-set-key [C-down] 'comint-next-input)))
+ (add-hook 'Rnw-mode-hook 
+          '(lambda() 
+             (local-set-key [(shift return)] 'my-ess-eval))) 
+  (require 'ess-site)
+#+end_src
+
+** Uniquify Buffer Names
+This is useful for when you have buffers with many similar names, as when there are various open files from different folders named =analysis.R= or similar. 
+
+#+source: uniquify
+#+begin_src emacs-lisp
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'post-forward-angle-brackets)  
+#+end_src

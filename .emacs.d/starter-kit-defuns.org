@@ -1,0 +1,229 @@
+#+TITLE: Starter Kit Defuns
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+
+* Starter Kit Defuns
+Function definitions
+
+#+begin_src emacs-lisp
+(require 'thingatpt)
+(require 'imenu)
+#+end_src
+
+** Network
+
+#+srcname: start-kit-view-url
+#+begin_src emacs-lisp 
+  (defun view-url ()
+    "Open a new buffer containing the contents of URL."
+    (interactive)
+    (let* ((default (thing-at-point-url-at-point))
+           (url (read-from-minibuffer "URL: " default)))
+      (switch-to-buffer (url-retrieve-synchronously url))
+      (rename-buffer url t)
+      (cond ((search-forward "<?xml" nil t) (xml-mode))
+            ((search-forward "<html" nil t) (html-mode)))))
+#+end_src
+
+** Buffer-related
+
+#+srcname: starter-kit-ido-imenu
+#+begin_src emacs-lisp :tangle no
+  (defun ido-imenu ()
+    "Update the imenu index and then use ido to select a symbol to navigate to.
+  Symbols matching the text at point are put first in the completion list."
+    (interactive)
+    (imenu--make-index-alist)
+    (let ((name-and-pos '())
+          (symbol-names '()))
+      (cl-flet ((addsymbols (symbol-list)
+                         (when (listp symbol-list)
+                           (dolist (symbol symbol-list)
+                             (let ((name nil) (position nil))
+                               (cond
+                                ((and (listp symbol) (imenu--subalist-p symbol))
+                                 (addsymbols symbol))
+                                
+                                ((listp symbol)
+                                 (setq name (car symbol))
+                                 (setq position (cdr symbol)))
+                                
+                                ((stringp symbol)
+                                 (setq name symbol)
+                                 (setq position (get-text-property 1 'org-imenu-marker symbol))))
+                               
+                               (unless (or (null position) (null name))
+                                 (add-to-list 'symbol-names name)
+                                 (add-to-list 'name-and-pos (cons name position))))))))
+        (addsymbols imenu--index-alist))
+      ;; If there are matching symbols at point, put them at the beginning of `symbol-names'.
+      (let ((symbol-at-point (thing-at-point 'symbol)))
+        (when symbol-at-point
+          (let* ((regexp (concat (regexp-quote symbol-at-point) "$"))
+                 (matching-symbols (delq nil (mapcar (lambda (symbol)
+                                                       (if (string-match regexp symbol) symbol))
+                                                     symbol-names))))
+            (when matching-symbols
+              (sort matching-symbols (lambda (a b) (> (length a) (length b))))
+              (mapc (lambda (symbol) (setq symbol-names (cons symbol (delete symbol symbol-names))))
+                    matching-symbols)))))
+      (let* ((selected-symbol (ido-completing-read "Symbol? " symbol-names))
+             (position (cdr (assoc selected-symbol name-and-pos))))
+        (goto-char position))))
+#+end_src
+
+** These belong in coding-hook:
+
+We have a number of turn-on-* functions since it's advised that lambda
+functions not go in hooks. Repeatedly evaling an add-to-list with a
+hook value will repeatedly add it since there's no way to ensure that
+a lambda doesn't already exist in the list.
+
+#+srcname: starter-kit-hook-functions
+#+begin_src emacs-lisp 
+  (defun local-column-number-mode ()
+    (make-local-variable 'column-number-mode)
+    (column-number-mode t))
+  
+  (defun local-comment-auto-fill ()
+    (set (make-local-variable 'comment-auto-fill-only-comments) t)
+    (auto-fill-mode t))
+  
+  (defun turn-on-idle-highlight-mode ()
+    (idle-highlight-mode t))
+  
+  (defun turn-on-hl-line-mode ()
+    (require 'hl-line+)
+    (global-hl-line-mode nil)
+    (toggle-hl-line-when-idle 1))
+      
+  (defun turn-on-save-place-mode ()
+    (setq save-place t))
+  
+  (defun turn-on-whitespace ()
+    (whitespace-mode t))
+#+end_src
+
+#+srcname: starter-kit-add-local-column-number-mode
+#+begin_src emacs-lisp 
+(add-hook 'starter-kit-coding-hook 'local-column-number-mode)
+#+end_src
+
+#+srcname: start-kit-add-local-comment-auto-fill
+#+begin_src emacs-lisp 
+(add-hook 'starter-kit-coding-hook 'local-comment-auto-fill)
+#+end_src
+
+#+srcname: starter-kit-add-pretty-lambdas
+#+begin_src emacs-lisp
+(add-hook 'starter-kit-coding-hook 'starter-kit-pretty-lambdas)
+#+end_src
+
+#+srcname: starter-kit-add-hl-line-mode
+#+begin_src emacs-lisp :tangle no
+(add-hook 'starter-kit-coding-hook 'turn-on-hl-line-mode)
+#+end_src
+
+#+srcname: starter-kit-add-idle-highlight-mode
+#+begin_src emacs-lisp :tangle no
+(add-hook 'starter-kit-coding-hook 'turn-on-idle-highlight-mode)
+#+end_src
+
+  
+#+srcname: starter-kit-run-starter-kit-coding-hook
+#+begin_src emacs-lisp 
+(defun run-starter-kit-coding-hook ()
+  "Enable things that are convenient across all coding buffers."
+  (run-hooks 'starter-kit-coding-hook))
+#+end_src
+
+#+srcname: starter-kit-untabify-buffer
+#+begin_src emacs-lisp 
+(defun untabify-buffer ()
+  (interactive)
+  (untabify (point-min) (point-max)))
+#+end_src
+
+#+srcname: starter-kit-indent-buffer
+#+begin_src emacs-lisp 
+(defun indent-buffer ()
+  (interactive)
+  (indent-region (point-min) (point-max)))
+#+end_src
+
+#+srcname: starter-kit-cleanup-buffer
+#+begin_src emacs-lisp 
+(defun cleanup-buffer ()
+  "Perform a bunch of operations on the whitespace content of a buffer."
+  (interactive)
+;;  (indent-buffer)
+  (untabify-buffer)
+  (delete-trailing-whitespace))
+#+end_src
+
+#+source: cleanup-buffer-on-save
+#+begin_src emacs-lisp
+  ;; Credit: Alex Ott
+  (defun cleanup-buffer-hook ()
+    "A hook for cleanup-buffer. cleanup-buffer-modes should be a list
+    of modes you want the cleanup-buffer function applied to routinely. "
+    (when (member major-mode cleanup-buffer-modes)
+      (cleanup-buffer)))
+  ;; now files int he modes listed in cleanup-buffer-mode will be
+  ;; automatically cleaned every time they are saved. 
+  (add-hook 'before-save-hook 'cleanup-buffer-hook)
+  
+#+end_src
+
+#+source: cleanup-buffer-when
+#+begin_src emacs-lisp
+  (setq cleanup-buffer-modes 
+        '(haskell-mode emacs-lisp-mode lisp-mode scheme-mode
+                       ess-mode erlang-mode clojure-mode ruby-mode))  
+#+end_src
+
+
+#+srcname: starter-kit-recentf-ido-find-file
+#+begin_src emacs-lisp 
+  (defun recentf-ido-find-file () 
+    "Find a recent file using Ido." 
+    (interactive) 
+    (let* ((file-assoc-list 
+            (mapcar (lambda (x) 
+                      (cons (file-name-nondirectory x) 
+                            x)) 
+                    recentf-list)) 
+           (filename-list 
+            (remove-duplicates (mapcar #'car file-assoc-list) 
+                               :test #'string=)) 
+           (filename (ido-completing-read "Choose recent file: " 
+                                          filename-list 
+                                          nil 
+                                          t))) 
+      (when filename 
+        (find-file (cdr (assoc filename 
+                               file-assoc-list)))))) 
+#+end_src
+
+** Other
+Useful when a large block of text is required (e.g. for testing)
+#+srcname: starter-kit-lorem
+#+begin_src emacs-lisp 
+(defun lorem ()
+  "Insert a lorem ipsum."
+  (interactive)
+  (insert "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do "
+          "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim"
+          "ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut "
+          "aliquip ex ea commodo consequat. Duis aute irure dolor in "
+          "reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla "
+          "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in "
+          "culpa qui officia deserunt mollit anim id est laborum."))
+#+end_src
+
+
+#+source: message-line
+#+begin_src emacs-lisp
+  (message "Starter Kit Defuns loaded.")
+#+end_src

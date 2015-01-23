@@ -1,0 +1,117 @@
+" Initial Settings:
+set nocompatible
+:fixdel
+set t_Co=256
+syntax enable
+set relativenumber
+set ruler
+set scrolloff=3
+set visualbell
+set title
+set modelines=0
+set autoindent
+set cursorline
+set backspace=indent,eol,start
+set undofile
+
+
+
+
+" NeoBundle Setup:
+ if !1 | finish | endif
+
+ if has('vim_starting')
+   set nocompatible
+   set runtimepath+=~/.vim/bundle/neobundle.vim/
+ endif
+
+ call neobundle#begin(expand('~/.vim/bundle/'))
+
+ NeoBundleFetch 'Shougo/neobundle.vim'
+
+ "My Bundles:
+ NeoBundle 'nicklasos/numix-molokai' "Numix Molokai Colorscheme
+ NeoBundle 'bling/vim-airline' "Powerline replacement
+ NeoBundle 'tpope/vim-surround'
+ NeoBundle 'SirVer/ultisnips' "Snippets
+ NeoBundle 'honza/vim-snippets'
+ NeoBundle 'rbonvall/snipmate-snippets-bib'
+ NeoBundle 'ervandew/supertab'
+ NeoBundle 'vim-pandoc/vim-pandoc'
+ NeoBundle 'vim-pandoc/vim-pandoc-syntax'
+ NeoBundle 'vim-scripts/TeX-9'
+ NeoBundle 'jnurmine/Zenburn'
+ call neobundle#end()
+
+ filetype plugin indent on
+
+ NeoBundleCheck
+
+"Tab and Spacing:
+
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+
+"Wrapping
+set wrap
+set textwidth=79
+set formatoptions=qrn1
+
+"Key Remapings:
+nnoremap ; :
+nnoremap : ;
+inoremap jj <ESC>
+let mapleader = "\\"
+let maplocalleader = "\\"
+"copy and paste
+vmap <C-c> "+yi
+vmap <C-x> "+c
+vmap <C-v> c<ESC>"+p
+imap <C-v> <ESC>"+pa
+
+"Latex:
+let g:tex_nine_config={
+    \'compiler': 'latexmk'
+\}
+let g:tex_flavor='latex'
+
+"Searching:
+nnoremap / /\v
+vnoremap / /\v
+set ignorecase
+set smartcase
+set gdefault
+set incsearch
+set showmatch
+set hlsearch
+nnoremap <leader><space> :noh<cr>
+
+"Status Bar:
+set laststatus=2
+
+"Colorscheme:
+"let molokai_original = 1
+colorscheme zenburn
+
+"Airline Settings:
+let g:airline_powerline_fonts = 1
+let g:airline_theme='powerlineish'
+set linespace=0
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline#extensions#tabline#enabled = 1
+
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" Trigger configuration.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsEditSplit="vertical"
+

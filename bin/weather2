@@ -1,0 +1,59 @@
+#!/usr/bin/env python2
+# Copyright 2014 Mark Stillwell <mark@stillwell.me>
+# development platform is Ubuntu 14.04 (Trusty Tahir)
+# requries python, python-networkmanager, python-pycurl, python-simplejson
+# also requires a font with icons at the appropriate values
+# The author uses one generated at icomoon.io by including all of the glyphs
+# from the  Meteocons, Ionicons, and Font Awesome icon libraries.
+
+from NetworkManager import NetworkManager as nm
+
+import pycurl
+import simplejson as json
+from io import BytesIO
+
+if not nm.ActiveConnections:
+    exit(0)
+
+# keys and suggested values at http://openweathermap.org/weather-conditions
+# unicode values are based on icomoon.io icon font including Meteocons
+icons = {'01d': u'\uf185', '01n': u'\uf186',
+         '02d': u'\uf185', '02n': u'\uf186',
+         '03d': u'\uf0c2', '03n': u'\uf0c2',
+         '04d': u'\uf0c2', '04n': u'\uf0c2',
+         '09d': u'\uf0e9', '09n': u'\uf0e9',
+         '10d': u'\uf0e9', '10n': u'\uf0e9',
+         '11d': u'\uf0e7', '11n': u'\uf0e7',
+         '13d': u'\uf08f', '13n': u'\uf08f',
+         '50d': u'\uf0c2', '50n': u'\uf0c2'}
+
+buf = BytesIO()
+c = pycurl.Curl()
+c.setopt(c.URL, "freegeoip.net/json/")
+c.setopt(c.WRITEDATA, buf)
+
+try:
+    c.perform()
+    geoinfo = json.loads(buf.getvalue())
+except Exception:
+    exit(0)
+
+buf = BytesIO()
+c = pycurl.Curl()
+c.setopt(c.URL, 'api.openweathermap.org/data/2.5/weather?lat={latitude}'
+                '&lon={longitude}&units=imperial'.format(**geoinfo))
+c.setopt(c.WRITEDATA, buf)
+
+try:
+    c.perform()
+    weatherinfo = json.loads(buf.getvalue())
+except Exception:
+    exit(0)
+
+short_text = (u' '.join(set(icons[w['icon']] for w in weatherinfo['weather']))
+              + u' {:d}\u00b0'.format(int(weatherinfo['main']['temp']))
+              ).encode('utf-8')
+
+
+print short_text
+exit(0)

@@ -1,0 +1,131 @@
+#+TITLE: Starter Kit Text Editing
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:starter-kit.org][Emacs Starter Kit]]. 
+
+This file provides settings for text-editing modes and formats, including
+Markdown and Pandoc, as well as spellchecking and line-wrapping.
+
+* Text Management and Appearance
+** Line wrapping and position
+    Sane line wrapping and scrolling for long documents and
+    papers. Plus a function for removing any hard-returns in a
+    document. 
+#+srcname: line-modes
+#+begin_src emacs-lisp
+  (global-visual-line-mode t)
+  ;;; prefer auto-fill to visual line wrap in ESS mode
+  (add-hook 'ess-mode-hook 'turn-on-auto-fill)
+  (add-hook 'inferior-ess-mode-hook 'turn-on-auto-fill) 
+  
+  ;;; but turn off auto-fill in tex and markdown
+  (add-hook 'markdown-mode-hook 'turn-off-auto-fill)
+  (add-hook 'latex-mode-hook 'turn-off-auto-fill)
+  
+  ;;; unfill paragraph
+  (defun unfill-paragraph ()
+  (interactive)
+  (let ((fill-column (point-max)))
+  (fill-paragraph nil)))
+  (global-set-key (kbd "<f6>") 'unfill-paragraph)
+  
+  ;; smooth-scrolling 
+  (require 'smooth-scrolling)
+  
+  ;; more smooth efforts.
+  (setq-default 
+  scroll-conservatively 0
+  scroll-up-aggressively 0.01
+  scroll-down-aggressively 0.01)
+  
+  ;; centered-cursor package in src/
+  ;; (and
+  ;;  (require 'centered-cursor-mode)
+  ;;  (global-centered-cursor-mode +1)) 
+#+end_src
+
+** Spelling
+    Use aspell instead of ispell. Turned off here because it loads
+    too late. I had to put it in [[file:starter-kit-aspell.org][starter-kit-aspell.org]].
+#+srcname: spelling-mode
+#+begin_src emacs-lisp :tangle no
+ (setq ispell-program-name "aspell"
+      ispell-dictionary "english"
+      ispell-dictionary-alist
+      (let ((default '("[A-Za-z]" "[^A-Za-z]" "[']" nil
+                       ("-B" "-d" "english")
+                       nil iso-8859-1)))
+        `((nil ,@default)
+          ("english" ,@default))))
+
+    ;; ispell --- make ispell skip \citep, \citet etc in .tex files.
+    (setq ispell-tex-skip-alists
+    '((;;("%\\[" . "%\\]") ; AMStex block comment...
+    ;; All the standard LaTeX keywords from L. Lamport's guide:
+    ;; \cite, \hspace, \hspace*, \hyphenation, \include, \includeonly, \input,
+    ;; \label, \nocite, \rule (in ispell - rest included here)
+    ("\\\\addcontentsline"              ispell-tex-arg-end 2)
+    ("\\\\add\\(tocontents\\|vspace\\)" ispell-tex-arg-end)
+    ("\\\\\\([aA]lph\\|arabic\\)"   ispell-tex-arg-end)
+    ("\\\\author"                         ispell-tex-arg-end)
+    ;; New regexps here --- kjh
+    ("\\\\\\(text\\|paren\\)cite" ispell-tex-arg-end)
+    ("\\\\cite\\(t\\|p\\|year\\|yearpar\\)" ispell-tex-arg-end)
+    ("\\\\bibliographystyle"                ispell-tex-arg-end)
+    ("\\\\makebox"                  ispell-tex-arg-end 0)
+    ("\\\\e?psfig"                  ispell-tex-arg-end)
+    ("\\\\document\\(class\\|style\\)" .
+    "\\\\begin[ \t\n]*{[ \t\n]*document[ \t\n]*}"))
+    (;; delimited with \begin.  In ispell: displaymath, eqnarray, eqnarray*,
+    ;; equation, minipage, picture, tabular, tabular* (ispell)
+    ("\\(figure\\|table\\)\\*?"     ispell-tex-arg-end 0)
+    ("list"                                 ispell-tex-arg-end 2)
+    ("program"             . "\\\\end[ \t\n]*{[ \t\n]*program[ \t\n]*}")
+    ("verbatim\\*?"        . "\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}"))))
+#+end_src
+
+** Smartparens Mode
+   Smart autopairing of quotes and parentheses. 
+#+srcname: smartparens
+#+begin_src emacs-lisp 
+  (smartparens-global-mode 1)
+  (require 'smartparens-config)
+#+end_src
+
+** Markdown 
+Markdown mode support. 
+
+#+srcname: markdown-mode
+#+begin_src emacs-lisp
+     (autoload 'markdown-mode "markdown-mode.el"
+     "Major mode for editing Markdown files" t)
+     (setq auto-mode-alist
+     (cons '("\\.Markdown" . markdown-mode) auto-mode-alist)
+     )
+     (setq auto-mode-alist
+     (cons '("\\.MarkDown" . markdown-mode) auto-mode-alist)
+     )
+     (setq auto-mode-alist
+     (cons '("\\.markdown" . markdown-mode) auto-mode-alist)
+     )
+     (setq auto-mode-alist
+     (cons '("\\.md" . markdown-mode) auto-mode-alist)
+     )
+  
+  ;; This function will open Marked.app and monitor the current markdown document
+  ;; for anything changes.  In other words, it will live reload and convert the
+  ;; markdown documment
+  (defun markdown-preview-file ()
+    "run Marked on the current file and revert the buffer"
+    (interactive)
+    (shell-command
+     (format "open -a /Applications/Marked.app %s"
+             (shell-quote-argument (buffer-file-name))))
+    )  
+  (global-set-key "\C-co" 'markdown-preview-file) 
+#+end_src
+
+#+source: message-line
+#+begin_src emacs-lisp
+  (message "Starter Kit Text loaded.")
+#+end_src

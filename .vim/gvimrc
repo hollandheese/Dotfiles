@@ -1,0 +1,8 @@
+set gfn=Source\ Code\ Pro\ for\ Powerline\ Medium\ 9	 " Font family and font size.
+set encoding=utf-8               " Use UTF-8 everywhere.
+set guioptions-=T                " Hide toolbar.
+"set bg=dark
+colorscheme zenburn		         " set colorscheme
+set guioptions-=r                " Don't show right scrollbar
+set guioptions-=l
+"set guioptions-=m                                                                                    

@@ -1,0 +1,188 @@
+#+TITLE: Starter Kit Misc
+#+OPTIONS: toc:nil num:nil ^:nil
+
+This is part of the [[file:starter-kit.org][Emacs Starter Kit]].
+
+* Starter Kit Misc
+Things that don't fit anywhere else.
+
+** Color Themes
+Emacs 24 introduces a streamlined theming system that replaces an
+older, messier one. The Starter Kit comes with Ethan Schoonover's
+/Solarized/ color theme and the /Zenburn/ theme, in versions
+maintained by Bozhidar Batsov. Load it with =M-x load-theme
+solarized-dark= or =M-x load-theme solarized-light=. You can also try
+loading the =zenburn= and =anti-zenburn= themes. 
+
+#+source: colors
+#+begin_src emacs-lisp
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/elpa")
+  (setq custom-safe-themes t)
+  (load-theme 'zenburn t)
+#+end_src
+
+** Window system 
+
+#+srcname: starter-kit-window-view-stuff
+#+begin_src emacs-lisp 
+  (when window-system
+    (setq frame-title-format '(buffer-file-name "%f" ("%b")))
+    (tooltip-mode -1)
+    (tool-bar-mode -1)
+    (blink-cursor-mode -1))
+
+  (mouse-wheel-mode t)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (prefer-coding-system 'utf-8)
+
+  (setq visible-bell t
+        echo-keystrokes 0.1
+        font-lock-maximum-decoration t
+        font-lock-verbose nil
+        inhibit-startup-message t
+        transient-mark-mode t
+      ;;  color-theme-is-global t
+        delete-by-moving-to-trash t
+        shift-select-mode nil
+        truncate-partial-width-windows nil
+        uniquify-buffer-name-style 'forward
+        whitespace-style '(trailing lines space-before-tab
+                                    indentation space-after-tab)
+        whitespace-line-column 100
+        ediff-window-setup-function 'ediff-setup-windows-plain
+        ediff-split-window-function 'split-window-horizontally
+        oddmuse-directory (concat dotfiles-dir "oddmuse")
+        xterm-mouse-mode t
+        save-place-file (concat dotfiles-dir "places"))
+#+end_src
+
+** Turn on Minimal mode
+Thin window dividers and no scroll bars. Toggle with `C-c C-s`.
+
+#+source: minimal-mode-on
+#+begin_src emacs-lisp
+  (minimal-mode)
+#+end_src
+
+** Set browser
+Set this to whatever browser you use e.g...
+: ;; (setq browse-url-browser-function 'browse-url-firefox)
+: ;; (setq browse-url-browser-function 'browse-default-macosx-browser)
+: ;; (setq browse-url-browser-function 'browse-default-windows-browser)
+: ;; (setq browse-url-browser-function 'browse-default-kde)
+: ;; (setq browse-url-browser-function 'browse-default-epiphany)
+: ;; (setq browse-url-browser-function 'browse-default-w3m)
+: ;; (setq browse-url-browser-function 'browse-url-generic
+: ;;       browse-url-generic-program "~/src/conkeror/conkeror")
+
+** Transparently open compressed files
+#+begin_src emacs-lisp
+(auto-compression-mode t)
+#+end_src
+
+** Enable syntax highlighting 
+#+begin_src emacs-lisp
+(global-font-lock-mode t)
+#+end_src
+
+** Save a list of recent files visited.
+#+begin_emacs-lisp 
+(recentf-mode 1)
+#+end_emacs-lisp
+** Save place last visited in buffer
+
+#+srcname: starter-kit-saveplace
+#+begin_src emacs-lisp
+
+  (require 'saveplace)
+  (setq-default save-place t)
+
+#+end_src
+
+
+** ido mode
+ido-mode is like magic pixie dust!
+#+srcname: starter-kit-loves-ido-mode
+#+begin_src emacs-lisp 
+  (when (> emacs-major-version 21)
+    (ido-mode t)
+    (setq ido-enable-prefix nil
+          ido-enable-flex-matching t
+          ido-create-new-buffer 'always
+          ido-use-filename-at-point nil
+          ido-max-prospects 10))
+#+end_src
+
+** Other, tabs, imenu and a coding hook
+#+begin_src emacs-lisp 
+  (set-default 'indent-tabs-mode nil)
+  (set-default 'indicate-empty-lines t)
+  (set-default 'imenu-auto-rescan t)
+  
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (add-hook 'text-mode-hook 'turn-on-flyspell)
+  (add-hook 'LaTeX-mode-hook 'turn-on-flyspell)
+  (add-hook 'markdown-mode-hook 'turn-on-flyspell)
+  (add-hook 'org-mode-hook 'turn-on-flyspell)
+  
+  (defvar starter-kit-coding-hook nil
+    "Hook that gets run on activation of any programming mode.")
+  
+  (defalias 'yes-or-no-p 'y-or-n-p)
+  ;; Seed the random-number generator
+  (random t)
+#+end_src
+
+*** functions for prettier source code
+#+begin_src emacs-lisp
+(defun starter-kit-pretty-lambdas ()
+  (font-lock-add-keywords
+   nil `(("(\\(lambda\\>\\)"
+          (0 (progn (compose-region (match-beginning 1) (match-end 1)
+                                    ,(make-char 'greek-iso8859-7 107))
+                    nil))))))
+#+end_src
+
+** Powerline provides a nicer modeline
+A nicer modeline. 
+#+source: powerline-load
+#+begin_src emacs-lisp
+  (require 'powerline)
+  (powerline-default-theme)
+
+#+end_src
+
+** Hippie expand: at times perhaps too hip
+#+begin_src emacs-lisp
+(delete 'try-expand-line hippie-expand-try-functions-list)
+(delete 'try-expand-list hippie-expand-try-functions-list)
+#+end_src
+
+** Don't clutter up directories with files~
+#+begin_src emacs-lisp
+(setq backup-directory-alist `(("." . ,(expand-file-name
+                                        (concat dotfiles-dir "backups")))))
+#+end_src
+
+** Associate modes with file extensions
+#+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("COMMIT_EDITMSG$" . diff-mode))
+(add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
+(require 'yaml-mode)
+(add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile$" . ruby-mode))
+#+end_src
+
+** Default to unified diffs
+#+begin_src emacs-lisp
+(setq diff-switches "-u")
+#+end_src
+
+
+
+#+source: message-line
+#+begin_src emacs-lisp
+  (message "Starter Kit Misc loaded.")
+#+end_src
